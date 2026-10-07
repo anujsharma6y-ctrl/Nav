@@ -50,15 +50,15 @@
     #bg-canvas { z-index: 1; }
     #fx-canvas { z-index: 20; }
 
-    /* Divine Aura Background Light */
+    /* Divine Aura Light Background */
     .divine-aura {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 90vmin;
-      height: 90vmin;
+      width: 92vmin;
+      height: 92vmin;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(255, 190, 40, 0.28) 0%, rgba(220, 60, 10, 0.15) 45%, rgba(0, 0, 0, 0) 70%);
+      background: radial-gradient(circle, rgba(255, 190, 40, 0.3) 0%, rgba(220, 60, 10, 0.16) 45%, rgba(0, 0, 0, 0) 70%);
       border-radius: 50%;
       filter: blur(40px);
       z-index: 2;
@@ -71,7 +71,7 @@
       100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.95; }
     }
 
-    /* Fixed Sound Control */
+    /* Floating Audio Control */
     .audio-btn {
       position: fixed;
       top: 18px;
@@ -92,7 +92,7 @@
     }
     .audio-btn:active { transform: scale(0.95); }
 
-    /* Main Experience Wrapper */
+    /* Main Container */
     #experience-container {
       position: relative;
       width: 100%;
@@ -102,17 +102,17 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
       text-align: center;
     }
 
-    /* Mata Rani Central Divine Visual Container */
+    /* Deity Showcase Frame */
     .mata-darshan-frame {
       position: relative;
       width: min(84vmin, 440px);
       height: min(84vmin, 440px);
-      max-height: 52vh;
-      margin: 0 auto 12px;
+      max-height: 50vh;
+      margin: 0 auto 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -123,7 +123,7 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 0 25px rgba(255, 200, 50, 0.7)) drop-shadow(0 0 50px rgba(230, 80, 0, 0.4));
+      filter: drop-shadow(0 0 25px rgba(255, 200, 50, 0.75)) drop-shadow(0 0 50px rgba(230, 80, 0, 0.45));
       animation: divineHover 5s ease-in-out infinite alternate;
     }
 
@@ -132,32 +132,32 @@
       100% { transform: translateY(-8px) scale(1.02); }
     }
 
-    /* Headings & Text */
+    /* Typography */
     h1.devotional-title {
       font-family: var(--font-display);
-      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-size: clamp(1.7rem, 4.4vw, 2.7rem);
       color: var(--gold-bright);
       text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 20px rgba(255, 215, 0, 0.6);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: 1px;
     }
 
     p.instruction-text {
-      font-size: clamp(1.05rem, 2.8vw, 1.4rem);
+      font-size: clamp(1rem, 2.7vw, 1.35rem);
       color: #ffecc2;
       max-width: 650px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       line-height: 1.6;
       text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     }
 
-    /* Common Buttons */
+    /* Sacred Buttons */
     .btn-divine {
       background: linear-gradient(135deg, #d4380d 0%, #b31d04 50%, #780206 100%);
       color: #fff6d9;
       border: 2px solid var(--gold);
-      padding: 14px 34px;
-      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+      padding: 13px 32px;
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
       font-family: var(--font-body);
       font-weight: 700;
       border-radius: 50px;
@@ -172,7 +172,7 @@
     .btn-divine:hover {
       transform: translateY(-2px) scale(1.04);
       border-color: #ffffff;
-      box-shadow: 0 8px 30px rgba(255, 180, 0, 0.8);
+      box-shadow: 0 8px 30px rgba(255, 180, 0, 0.85);
     }
     .btn-divine:active { transform: scale(0.96); }
 
@@ -182,10 +182,10 @@
       transition: transform 0.25s ease, filter 0.25s ease;
       touch-action: manipulation;
     }
-    .touch-target:hover { transform: scale(1.08); filter: drop-shadow(0 0 15px gold); }
+    .touch-target:hover { transform: scale(1.1); filter: drop-shadow(0 0 15px gold); }
     .touch-target:active { transform: scale(0.95); }
 
-    /* Quiz Stage */
+    /* Questions / Quiz Grid */
     .options-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -204,6 +204,8 @@
       cursor: pointer;
       transition: all 0.25s ease;
       backdrop-filter: blur(6px);
+      font-family: var(--font-body);
+      font-weight: 600;
     }
     .quiz-card:hover {
       border-color: var(--gold);
@@ -211,13 +213,13 @@
       box-shadow: 0 0 15px rgba(255,215,0,0.4);
     }
 
-    /* Temple Door Stage */
+    /* Ancient Temple Door Stage */
     .door-wrapper {
       position: relative;
       width: 260px;
-      height: 320px;
+      height: 310px;
       perspective: 1000px;
-      margin: 10px auto 24px;
+      margin: 10px auto 20px;
       display: flex;
     }
     .door-panel {
@@ -238,10 +240,10 @@
     .door-open .door-left { transform: rotateY(-110deg); }
     .door-open .door-right { transform: rotateY(110deg); }
 
-    /* Aarti Plate Interactive */
+    /* Aarti Plate */
     .aarti-plate-container {
-      width: min(75vmin, 260px);
-      height: min(75vmin, 260px);
+      width: min(75vmin, 250px);
+      height: min(75vmin, 250px);
       border-radius: 50%;
       background: radial-gradient(circle, #f5d77f 0%, #ba8b02 65%, #634300 100%);
       box-shadow: 0 0 35px rgba(255, 180, 0, 0.7), inset 0 0 25px rgba(0,0,0,0.6);
@@ -256,7 +258,7 @@
     }
     .aarti-plate-container:active { cursor: grabbing; }
 
-    /* Blessing Overlay Screen */
+    /* Blessing Screen Overlay */
     .blessing-screen {
       position: fixed;
       top: 0;
@@ -269,7 +271,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 30px;
+      padding: 24px;
       text-align: center;
       opacity: 0;
       pointer-events: none;
@@ -281,47 +283,45 @@
     }
     .blessing-card {
       max-width: 680px;
-      background: linear-gradient(135deg, rgba(60, 2, 8, 0.85), rgba(30, 0, 4, 0.95));
+      background: linear-gradient(135deg, rgba(60, 2, 8, 0.88), rgba(30, 0, 4, 0.96));
       border: 2px solid var(--gold);
       border-radius: 24px;
-      padding: clamp(24px, 5vw, 45px);
+      padding: clamp(24px, 5vw, 42px);
       box-shadow: 0 10px 40px rgba(0,0,0,0.9), 0 0 50px rgba(255, 200, 40, 0.35);
       position: relative;
     }
     .blessing-text {
       font-family: var(--font-display);
-      font-size: clamp(1.35rem, 3.4vw, 2.1rem);
+      font-size: clamp(1.3rem, 3.2vw, 2rem);
       line-height: 1.6;
       color: #fff2b8;
       text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
 
-    /* Final Screen Specifics */
+    /* Final Tribute Styling */
     .final-tribute {
       font-family: var(--font-display);
-      font-size: clamp(1.3rem, 3.4vw, 2.3rem);
+      font-size: clamp(1.35rem, 3.4vw, 2.35rem);
       color: #fff1b0;
-      text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 35px rgba(255, 140, 0, 0.6);
-      margin: 16px 0;
-      padding: 12px 24px;
-      border-top: 1px solid rgba(247, 208, 112, 0.5);
-      border-bottom: 1px solid rgba(247, 208, 112, 0.5);
-      animation: shimmerText 3s ease-in-out infinite alternate;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.85), 0 0 35px rgba(255, 140, 0, 0.65);
+      margin: 14px 0;
+      padding: 10px 20px;
+      border-top: 1.5px solid rgba(247, 208, 112, 0.5);
+      border-bottom: 1.5px solid rgba(247, 208, 112, 0.5);
+      animation: shimmerTribute 3s ease-in-out infinite alternate;
     }
-    @keyframes shimmerText {
+    @keyframes shimmerTribute {
       0% { filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6)); }
-      100% { filter: drop-shadow(0 0 18px rgba(255, 180, 0, 0.95)); }
+      100% { filter: drop-shadow(0 0 20px rgba(255, 180, 0, 0.95)); }
     }
 
-    /* General Stage Transition Animation */
     .fade-in { animation: fadeIn 0.8s ease-in-out forwards; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(12px) scale(0.97); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
     }
@@ -329,13 +329,17 @@
 </head>
 <body>
 
+  <!-- Audio track provided by user -->
+  <audio id="bg-audio" loop preload="auto">
+    <source src="O_Aaye_Tere_Bhawan_Music_by_Sonu_nigam_remix_by_Dj_Virat_Hajip.m4a" type="audio/mp4">
+  </audio>
+
   <button id="audio-toggle" class="audio-btn" aria-label="ध्वनि नियंत्रण">🔊 ध्वनि चालू / बंद</button>
 
   <canvas id="bg-canvas"></canvas>
   <div class="divine-aura"></div>
   <canvas id="fx-canvas"></canvas>
 
-  <!-- Interactive Active Stage Stage Container -->
   <main id="experience-container" role="main"></main>
 
   <!-- Divine Blessing Screen Overlay -->
@@ -349,15 +353,12 @@
 
   <script>
     /* =========================================================================
-       1. WEB AUDIO SYNTHESIZER (Devotional Acoustic Atmosphere)
-       Pure Web Audio API generating temple bells, shankh resonators, drone & manjira
+       1. DEVOTIONAL SOUND SYNTHESIZER & AUDIO MANAGER
        ========================================================================= */
     class DevotionalSoundEngine {
       constructor() {
         this.ctx = null;
         this.isMuted = false;
-        this.droneOsc1 = null;
-        this.droneOsc2 = null;
         this.droneGain = null;
         this.initialized = false;
       }
@@ -371,13 +372,17 @@
       }
 
       toggleMute() {
-        if (!this.initialized) { this.init(); return true; }
+        if (!this.initialized) { this.init(); }
         this.isMuted = !this.isMuted;
+        const bgAudio = document.getElementById('bg-audio');
+
         if (this.ctx) {
           if (this.isMuted) {
             this.ctx.suspend();
+            if (bgAudio) bgAudio.pause();
           } else {
             this.ctx.resume();
+            if (bgAudio) bgAudio.play().catch(() => {});
           }
         }
         return !this.isMuted;
@@ -386,22 +391,21 @@
       startDrone() {
         if (!this.ctx) return;
         this.droneGain = this.ctx.createGain();
-        this.droneGain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        this.droneGain.gain.setValueAtTime(0.06, this.ctx.currentTime);
         this.droneGain.connect(this.ctx.destination);
 
-        // Tanpura / Sa-Pa harmonic fundamental (C# / 138.59 Hz & G# / 207.65 Hz)
-        this.droneOsc1 = this.ctx.createOscillator();
-        this.droneOsc1.type = 'sine';
-        this.droneOsc1.frequency.setValueAtTime(138.59, this.ctx.currentTime);
+        const osc1 = this.ctx.createOscillator();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(138.59, this.ctx.currentTime); // Sa
 
-        this.droneOsc2 = this.ctx.createOscillator();
-        this.droneOsc2.type = 'triangle';
-        this.droneOsc2.frequency.setValueAtTime(207.65, this.ctx.currentTime);
+        const osc2 = this.ctx.createOscillator();
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(207.65, this.ctx.currentTime); // Pa
 
-        this.droneOsc1.connect(this.droneGain);
-        this.droneOsc2.connect(this.droneGain);
-        this.droneOsc1.start();
-        this.droneOsc2.start();
+        osc1.connect(this.droneGain);
+        osc2.connect(this.droneGain);
+        osc1.start();
+        osc2.start();
       }
 
       playTempleBell(freq = 880) {
@@ -412,8 +416,7 @@
 
         osc.type = 'sine';
         osc.frequency.setValueAtTime(freq, now);
-
-        gain.gain.setValueAtTime(0.45, now);
+        gain.gain.setValueAtTime(0.4, now);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
 
         osc.connect(gain);
@@ -421,12 +424,11 @@
         osc.start(now);
         osc.stop(now + 2.9);
 
-        // Bell overtone for metal resonance
         const overtone = this.ctx.createOscillator();
         const overGain = this.ctx.createGain();
         overtone.type = 'triangle';
         overtone.frequency.setValueAtTime(freq * 2.76, now);
-        overGain.gain.setValueAtTime(0.2, now);
+        overGain.gain.setValueAtTime(0.18, now);
         overGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
         overtone.connect(overGain);
         overGain.connect(this.ctx.destination);
@@ -445,19 +447,17 @@
         osc.frequency.exponentialRampToValueAtTime(260, now + 1.2);
         osc.frequency.exponentialRampToValueAtTime(210, now + 3.2);
 
-        // Lowpass filter for deep acoustic natural horn timbre
         const filter = this.ctx.createBiquadFilter();
         filter.type = 'lowpass';
         filter.frequency.setValueAtTime(450, now);
 
         gain.gain.setValueAtTime(0.01, now);
-        gain.gain.linearRampToValueAtTime(0.5, now + 0.9);
+        gain.gain.linearRampToValueAtTime(0.45, now + 0.9);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.8);
 
         osc.connect(filter);
         filter.connect(gain);
         gain.connect(this.ctx.destination);
-
         osc.start(now);
         osc.stop(now + 3.9);
       }
@@ -476,7 +476,7 @@
     });
 
     /* =========================================================================
-       2. SACRED PARTICLES & VISUAL CANVASES (Marigolds, Sparkles & Fireworks)
+       2. CANVAS ENGINE: PETALS, SPARKS & FIREWORKS
        ========================================================================= */
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
@@ -491,7 +491,6 @@
       h = bgCanvas.height = fxCanvas.height = window.innerHeight;
     });
 
-    // Petals & Golden Sparks array
     const petals = [];
     const sparks = [];
     const fireworks = [];
@@ -534,7 +533,6 @@
         this.radius = 0.8 + Math.random() * 2.2;
         this.alpha = 0.2 + Math.random() * 0.8;
         this.speedY = -0.3 - Math.random() * 0.8;
-        this.pulse = Math.random() * 0.05;
       }
       update() {
         this.y += this.speedY;
@@ -553,7 +551,6 @@
       }
     }
 
-    // Populate initial ambience
     for (let i = 0; i < 28; i++) petals.push(new SacredPetal());
     for (let i = 0; i < 65; i++) sparks.push(new GoldenSpark());
 
@@ -620,8 +617,15 @@
     renderParticles();
 
     /* =========================================================================
-       3. 20-STAGE DEVOTIONAL JOURNEY ARCHITECTURE
+       3. EXACT FILENAME CONFIGURATION
        ========================================================================= */
+    const IMG_SANCTUM_NIGHT   = "Screenshot_20260929-212039.png";
+    const IMG_TEMPLE_JEWELED  = "Screenshot_20260929-212048.png";
+    const IMG_SHERAWALI_LION  = "Screenshot_20260929-212112.png";
+
     const container = document.getElementById('experience-container');
     const modal = document.getElementById('blessing-modal');
-    const blessingText
+    const blessingText = document.getElementById('blessing-content');
+    const nextBtn = document.getElementById('blessing-next-btn');
+
+  
