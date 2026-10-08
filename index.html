@@ -77,10 +77,10 @@
       top: 18px;
       right: 18px;
       z-index: 100;
-      background: rgba(30, 0, 5, 0.8);
+      background: rgba(30, 0, 5, 0.75);
       border: 1.5px solid var(--gold);
       color: var(--gold);
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 30px;
       font-family: var(--font-body);
       font-size: 0.95rem;
@@ -156,7 +156,7 @@
       background: linear-gradient(135deg, #d4380d 0%, #b31d04 50%, #780206 100%);
       color: #fff6d9;
       border: 2px solid var(--gold);
-      padding: 13px 34px;
+      padding: 13px 32px;
       font-size: clamp(1.05rem, 2.5vw, 1.3rem);
       font-family: var(--font-body);
       font-weight: 700;
@@ -221,8 +221,28 @@
       perspective: 1000px;
       margin: 10px auto 20px;
       display: flex;
+      overflow: hidden;
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6), 0 0 25px rgba(255, 200, 60, 0.18);
+      background: rgba(30, 0, 5, 0.8);
+    }
+    .door-visual {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(0.82);
+      transition: opacity 1.1s ease 0.25s, transform 1.2s ease 0.25s;
+      z-index: 0;
+    }
+    .door-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.25) brightness(0.85) drop-shadow(0 0 30px rgba(255, 180, 0, 0.45));
     }
     .door-panel {
+      position: relative;
+      z-index: 2;
       width: 50%;
       height: 100%;
       background: linear-gradient(135deg, #7a2202, #380802);
@@ -237,6 +257,7 @@
     }
     .door-left { border-radius: 120px 0 0 8px; transform-origin: left; }
     .door-right { border-radius: 0 120px 8px 0; transform-origin: right; }
+    .door-open .door-visual { opacity: 1; transform: scale(1); }
     .door-open .door-left { transform: rotateY(-110deg); }
     .door-open .door-right { transform: rotateY(110deg); }
 
@@ -299,43 +320,37 @@
       margin-bottom: 26px;
     }
 
-    /* Grand Antique-Gold Greeting on Stage 20 */
+    /* Final Tribute Styling */
     .final-tribute-banner {
-      width: 100%;
-      max-width: 720px;
-      margin: 16px auto;
-      padding: 16px 24px;
-      background: radial-gradient(circle at center, rgba(120, 40, 10, 0.5) 0%, rgba(35, 5, 8, 0.85) 100%);
-      border: 2px solid var(--gold);
-      border-radius: 24px;
-      box-shadow: 0 0 35px rgba(255, 200, 40, 0.5), inset 0 0 25px rgba(255, 230, 140, 0.2);
-      animation: goldenGather 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      position: relative;
-      overflow: hidden;
+      max-width: min(92vw, 760px);
+      margin: 8px auto 14px;
+      padding: 12px 24px;
+      border: 2px solid #d8b45a;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(88, 45, 7, 0.92), rgba(35, 12, 3, 0.96));
+      box-shadow: inset 0 0 18px rgba(255, 218, 120, 0.16), 0 0 24px rgba(255, 190, 50, 0.3);
     }
-
     .final-tribute-text {
       font-family: var(--font-display);
-      font-size: clamp(1.4rem, 3.8vw, 2.5rem);
-      background: linear-gradient(135deg, #fffbeb 0%, #fef08a 25%, #f59e0b 55%, #d97706 80%, #78350f 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 10px rgba(245, 158, 11, 0.85));
-      letter-spacing: 0.5px;
-      line-height: 1.35;
+      font-size: clamp(1.25rem, 3.5vw, 2.4rem);
+      line-height: 1.45;
+      color: #ffe9a6;
+      text-shadow: 0 0 12px rgba(255, 215, 0, 0.65);
     }
-
-    @keyframes goldenGather {
-      0% {
-        opacity: 0;
-        transform: scale(0.85) translateY(24px);
-        filter: blur(10px) brightness(2);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-        filter: blur(0px) brightness(1);
-      }
+    .final-tribute {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 3.4vw, 2.35rem);
+      color: #fff1b0;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.85), 0 0 35px rgba(255, 140, 0, 0.65);
+      margin: 14px 0;
+      padding: 10px 20px;
+      border-top: 1.5px solid rgba(247, 208, 112, 0.5);
+      border-bottom: 1.5px solid rgba(247, 208, 112, 0.5);
+      animation: shimmerTribute 3s ease-in-out infinite alternate;
+    }
+    @keyframes shimmerTribute {
+      0% { filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6)); }
+      100% { filter: drop-shadow(0 0 20px rgba(255, 180, 0, 0.95)); }
     }
 
     .fade-in { animation: fadeIn 0.8s ease-in-out forwards; }
@@ -351,15 +366,9 @@
 </head>
 <body>
 
-  <!-- Devotional Background Audio (Plays during initial walkthrough stages 1 to 16) -->
-  <audio id="walkthrough-audio" loop preload="auto">
+  <!-- Audio track provided by user -->
+  <audio id="bg-audio" loop preload="auto">
     <source src="O_Aaye_Tere_Bhawan_Music_by_Sonu_nigam_remix_by_Dj_Virat_Hajip.m4a" type="audio/mp4">
-  </audio>
-
-  <!-- Devotional Aarti Audio (Begins from Stage 17 Aarti onwards) -->
-  <audio id="aarti-audio" loop preload="auto">
-    <source src="xyz.mp3" type="audio/mpeg">
-    <source src="xyz.m4a" type="audio/mp4">
   </audio>
 
   <button id="audio-toggle" class="audio-btn" aria-label="ध्वनि नियंत्रण">🔊 ध्वनि चालू / बंद</button>
@@ -381,7 +390,7 @@
 
   <script>
     /* =========================================================================
-       1. SYNTHESIZER & MULTI-TRACK AUDIO MANAGER
+       1. DEVOTIONAL SOUND SYNTHESIZER & AUDIO MANAGER
        ========================================================================= */
     class DevotionalSoundEngine {
       constructor() {
@@ -389,7 +398,6 @@
         this.isMuted = false;
         this.droneGain = null;
         this.initialized = false;
-        this.currentMode = 'walkthrough'; // 'walkthrough' or 'aarti'
       }
 
       init() {
@@ -400,59 +408,18 @@
         this.initialized = true;
       }
 
-      startWalkthroughTrack() {
-        const wtAudio = document.getElementById('walkthrough-audio');
-        if (wtAudio && !this.isMuted) {
-          wtAudio.volume = 0.65;
-          wtAudio.play().catch(() => {});
-        }
-      }
-
-      switchToAartiTrack() {
-        this.currentMode = 'aarti';
-        const wtAudio = document.getElementById('walkthrough-audio');
-        const aartiAudio = document.getElementById('aarti-audio');
-
-        // Smooth fade out walkthrough track
-        if (wtAudio) {
-          let vol = wtAudio.volume;
-          const fadeInterval = setInterval(() => {
-            if (vol > 0.1) {
-              vol -= 0.1;
-              wtAudio.volume = Math.max(0, vol);
-            } else {
-              clearInterval(fadeInterval);
-              wtAudio.pause();
-              wtAudio.currentTime = 0;
-            }
-          }, 80);
-        }
-
-        // Start dedicated aarti song 'xyz'
-        if (aartiAudio && !this.isMuted) {
-          aartiAudio.volume = 0.75;
-          aartiAudio.play().catch(() => {});
-        }
-      }
-
       toggleMute() {
         if (!this.initialized) { this.init(); }
         this.isMuted = !this.isMuted;
-        const wtAudio = document.getElementById('walkthrough-audio');
-        const aartiAudio = document.getElementById('aarti-audio');
+        const bgAudio = document.getElementById('bg-audio');
 
         if (this.ctx) {
           if (this.isMuted) {
             this.ctx.suspend();
-            if (wtAudio) wtAudio.pause();
-            if (aartiAudio) aartiAudio.pause();
+            if (bgAudio) bgAudio.pause();
           } else {
             this.ctx.resume();
-            if (this.currentMode === 'walkthrough' && wtAudio) {
-              wtAudio.play().catch(() => {});
-            } else if (this.currentMode === 'aarti' && aartiAudio) {
-              aartiAudio.play().catch(() => {});
-            }
+            if (bgAudio) bgAudio.play().catch(() => {});
           }
         }
         return !this.isMuted;
@@ -461,16 +428,16 @@
       startDrone() {
         if (!this.ctx) return;
         this.droneGain = this.ctx.createGain();
-        this.droneGain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+        this.droneGain.gain.setValueAtTime(0.06, this.ctx.currentTime);
         this.droneGain.connect(this.ctx.destination);
 
         const osc1 = this.ctx.createOscillator();
         osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(138.59, this.ctx.currentTime);
+        osc1.frequency.setValueAtTime(138.59, this.ctx.currentTime); // Sa
 
         const osc2 = this.ctx.createOscillator();
         osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(207.65, this.ctx.currentTime);
+        osc2.frequency.setValueAtTime(207.65, this.ctx.currentTime); // Pa
 
         osc1.connect(this.droneGain);
         osc2.connect(this.droneGain);
@@ -486,7 +453,7 @@
 
         osc.type = 'sine';
         osc.frequency.setValueAtTime(freq, now);
-        gain.gain.setValueAtTime(0.38, now);
+        gain.gain.setValueAtTime(0.4, now);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
 
         osc.connect(gain);
@@ -498,7 +465,7 @@
         const overGain = this.ctx.createGain();
         overtone.type = 'triangle';
         overtone.frequency.setValueAtTime(freq * 2.76, now);
-        overGain.gain.setValueAtTime(0.16, now);
+        overGain.gain.setValueAtTime(0.18, now);
         overGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
         overtone.connect(overGain);
         overGain.connect(this.ctx.destination);
@@ -546,7 +513,7 @@
     });
 
     /* =========================================================================
-       2. CANVAS PARTICLES & SHOWER (Petals, Sparks & Fireworks)
+       2. CANVAS ENGINE: PETALS, SPARKS & FIREWORKS
        ========================================================================= */
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
@@ -687,7 +654,7 @@
     renderParticles();
 
     /* =========================================================================
-       3. EXACT FILENAMES MAPPING
+       3. EXACT FILENAME CONFIGURATION
        ========================================================================= */
     const IMG_SANCTUM_NIGHT   = "Screenshot_20260929-212039.png";
     const IMG_TEMPLE_JEWELED  = "Screenshot_20260929-212048.png";
@@ -732,7 +699,11 @@
           document.getElementById('btn-s1').onclick = () => {
             sound.init();
             sound.playTempleBell(880);
-            sound.startWalkthroughTrack();
+            const bgAudio = document.getElementById('bg-audio');
+            if (bgAudio) {
+              bgAudio.volume = 0.65;
+              bgAudio.play().catch(() => {});
+            }
             showBlessing("माता रानी आपके जीवन में सुख, शांति और समृद्धि का प्रकाश भर दें।", () => renderStage(2));
           };
           break;
@@ -864,45 +835,27 @@
           break;
 
         /* ---------------- STAGE 7: मंदिर का द्वार ---------------- */
-        /* ---------------- STAGE 7: मंदिर का द्वार और माँ का प्रकटीकरण ---------------- */
-case 7:
-  container.innerHTML = `
-    <h1 class="devotional-title fade-in">पावन कपाट</h1>
-    <p class="instruction-text fade-in">दिव्य मंदिर का द्वार आपके स्वागत के लिए प्रतीक्षारत है।</p>
-    <div id="temple-doors" class="door-wrapper fade-in" style="position: relative; width: 280px; height: 340px; margin: 10px auto 22px; perspective: 1000px; overflow: hidden; border-radius: 140px 140px 12px 12px; border: 3px solid var(--gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);">
-      
-      <!-- कपाट के पीछे गर्भगृह में माता रानी का दिव्य चित्र -->
-      <div id="sanctum-deity" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #631201 0%, #1a0003 100%); z-index: 1;">
-        <img src="${IMG_TEMPLE_JEWELED}" alt="गर्भगृह दर्शन" style="width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 20px gold); opacity: 0; transform: scale(0.9); transition: all 1.4s ease 0.4s;" id="revealed-mata-img" />
-      </div>
-
-      <!-- बायाँ और दायाँ कपाट -->
-      <div class="door-panel door-left" style="position: absolute; left: 0; top: 0; width: 50%; height: 100%; z-index: 5;"><span style="font-size: 2.2rem;">🪷</span><span style="font-size: 2.2rem;">🔔</span></div>
-      <div class="door-panel door-right" style="position: absolute; right: 0; top: 0; width: 50%; height: 100%; z-index: 5;"><span style="font-size: 2.2rem;">🪷</span><span style="font-size: 2.2rem;">🔔</span></div>
-    </div>
-    <button id="open-door-btn" class="btn-divine">द्वार खोलें 🚪</button>
-  `;
-
-  document.getElementById('open-door-btn').onclick = () => {
-    sound.playTempleBell(587);
-    sound.playShankh();
-    triggerFlowerShower(35);
-
-    // कपाट खोलने का एनीमेशन
-    document.getElementById('temple-doors').classList.add('door-open');
-
-    // कपाट खुलते ही माता रानी का चित्र स्वर्ण प्रकाश के साथ प्रकट होगा
-    const mataImg = document.getElementById('revealed-mata-img');
-    if (mataImg) {
-      mataImg.style.opacity = "1";
-      mataImg.style.transform = "scale(1.05)";
-    }
-
-    setTimeout(() => {
-      showBlessing("माता रानी आपके जीवन के हर बंद द्वार को सफलता और सौभाग्य के लिए खोल दें।", () => renderStage(8));
-    }, 2200);
-  };
-  break;
+        case 7:
+          container.innerHTML = `
+            <h1 class="devotional-title fade-in">पावन कपाट</h1>
+            <p class="instruction-text fade-in">दिव्य मंदिर का द्वार आपके स्वागत के लिए प्रतीक्षारत है।</p>
+            <div id="temple-doors" class="door-wrapper fade-in">
+              <div class="door-visual">
+                <img src="${IMG_SHERAWALI_LION}" alt="माँ शेरावाली" onerror="this.onerror=null;this.style.display='none';" />
+              </div>
+              <div class="door-panel door-left"><span style="font-size: 2rem;">🪷</span><span style="font-size: 2rem;">🔔</span></div>
+              <div class="door-panel door-right"><span style="font-size: 2rem;">🪷</span><span style="font-size: 2rem;">🔔</span></div>
+            </div>
+            <button id="open-door-btn" class="btn-divine">द्वार खोलें 🚪</button>
+          `;
+          document.getElementById('open-door-btn').onclick = () => {
+            sound.playTempleBell(587);
+            document.getElementById('temple-doors').classList.add('door-open');
+            setTimeout(() => {
+              showBlessing("माता रानी आपके जीवन के हर बंद द्वार को सफलता और सौभाग्य के लिए खोल दें।", () => renderStage(8));
+            }, 1200);
+          };
+          break;
 
         /* ---------------- STAGE 8: द्वितीय पावन प्रश्न (दीपक) ---------------- */
         case 8:
@@ -1107,9 +1060,8 @@ case 7:
           };
           break;
 
-        /* ---------------- STAGE 17: महा आरती (Transitions to 'xyz' track) ---------------- */
+        /* ---------------- STAGE 17: महा आरती ---------------- */
         case 17:
-          sound.switchToAartiTrack();
           container.innerHTML = `
             <div class="mata-darshan-frame fade-in">
               <img src="${IMG_SHERAWALI_LION}" alt="माँ शेरावाली आरती" />
@@ -1179,8 +1131,7 @@ case 7:
             </div>
             <h1 class="devotional-title fade-in" style="font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 4px;">🌺 जय माता दी 🌺</h1>
             
-            <!-- Large Elegant Antique-Gold Greeting prominently for Anuj Sharma -->
-            <div class="final-tribute-banner">
+            <div class="final-tribute-banner fade-in">
               <div class="final-tribute-text">
                 🌺 अनुज शर्मा की ओर से हार्दिक शुभकामनाएँ 🌺
               </div>
@@ -1192,27 +1143,24 @@ case 7:
             <button id="restart-btn" class="btn-divine fade-in">दिव्य यात्रा पुनः प्रारंभ करें 🔄</button>
           `;
           sound.playTempleBell(1046);
-          triggerFlowerShower(65);
+          triggerFlowerShower(60);
           createFirework(w * 0.5, h * 0.35);
 
           document.getElementById('restart-btn').onclick = () => {
-            // Reset to beginning and restore walkthrough music
-            sound.currentMode = 'walkthrough';
-            const aartiAudio = document.getElementById('aarti-audio');
-            if (aartiAudio) {
-              aartiAudio.pause();
-              aartiAudio.currentTime = 0;
-            }
             renderStage(1);
           };
           break;
       }
     }
 
+    // Launch Experience
     renderStage(1);
   </script>
 </body>
 </html>
+
+
+
   
 
   
