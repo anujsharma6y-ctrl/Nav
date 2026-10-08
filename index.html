@@ -95,7 +95,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      z-index: 10;
+      z-index: 30;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -108,7 +108,7 @@
       position: relative;
       width: min(84vmin, 440px);
       height: min(84vmin, 440px);
-      max-height: 50vh;
+      max-height: 48vh;
       margin: 0 auto 10px;
       display: flex;
       align-items: center;
@@ -327,32 +327,31 @@
       margin-bottom: 26px;
     }
 
-/* अंतिम स्क्रीन का विशेष अनुज शर्मा शुभकामना बैनर (सुस्पष्ट एवं उच्च कंट्रास्ट) */
+    /* अंतिम स्क्रीन का विशेष अनुज शर्मा शुभकामना बैनर */
     .final-tribute-banner {
       width: 100%;
-      max-width: 760px;
-      margin: 18px auto 14px;
-      padding: 16px 24px;
-      background: linear-gradient(180deg, rgba(55, 3, 8, 0.96) 0%, rgba(20, 1, 4, 0.98) 100%);
-      border: 2.5px solid #ffd700;
+      max-width: min(900px, 94vw);
+      margin: 12px auto;
+      padding: 14px 20px;
+      background: linear-gradient(180deg, #4a0710 0%, #200207 100%);
+      border: 3px solid #ffd700;
       border-radius: 20px;
       box-shadow: 0 0 25px rgba(255, 215, 0, 0.6), inset 0 0 15px rgba(255, 215, 0, 0.25);
       position: relative;
       z-index: 25;
       text-align: center;
       animation: goldenGather 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      overflow: hidden;
+      flex-shrink: 0;
     }
 
     .final-tribute-text {
       font-family: var(--font-display);
-      font-size: clamp(1.45rem, 4vw, 2.4rem);
+      font-size: clamp(1.35rem, 3.2vw, 2.1rem);
       font-weight: 800;
-      color: #fff4bd; /* स्पष्ट और चमकदार स्वर्णिम रंग */
+      color: #fff8dc;
       text-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.95),
-        0 0 12px rgba(255, 215, 0, 0.9),
-        0 0 24px rgba(230, 92, 0, 0.7);
+        0 2px 5px #000,
+        0 0 12px rgba(255, 215, 0, 0.7);
       line-height: 1.4;
       letter-spacing: 0.5px;
       display: block;
@@ -382,18 +381,18 @@
 </head>
 <body>
 
-  <!-- पृष्ठभूमि संगीत 1: यात्रा संगीत -->
+  <!-- पृष्ठभूमि संगीत (प्रारंभिक यात्रा हेतु) -->
   <audio id="walkthrough-audio" loop preload="auto">
     <source src="O_Aaye_Tere_Bhawan_Music_by_Sonu_nigam_remix_by_Dj_Virat_Hajip.m4a" type="audio/mp4">
   </audio>
 
-  <!-- पृष्ठभूमि संगीत 2: महा आरती संगीत -->
+  <!-- महा आरती संगीत (चरण 17 से प्रारंभ) -->
   <audio id="aarti-audio" loop preload="auto">
     <source src="xyz.mp3" type="audio/mpeg">
     <source src="xyz.m4a" type="audio/mp4">
   </audio>
 
-  <!-- केवल संगीत ऑन/ऑफ बटन (अन्य ध्वनियाँ सदैव बजेंगी) -->
+  <!-- संगीत चालू/बंद बटन -->
   <button id="music-toggle" class="music-btn" aria-label="संगीत नियंत्रण">🎵 संगीत: चालू</button>
 
   <canvas id="bg-canvas"></canvas>
@@ -412,7 +411,7 @@
 
   <script>
     /* =========================================================================
-       1. ध्वनियाँ (सदैव सक्रिय) एवं संगीत प्रबंधन (ऑन/ऑफ विकल्प)
+       1. ध्वनियाँ एवं संगीत प्रबंधन
        ========================================================================= */
     class DevotionalSoundEngine {
       constructor() {
@@ -471,7 +470,6 @@
         return !this.musicMuted;
       }
 
-      // मंदिर की घंटियाँ, शंख आदि ध्वनियाँ (हमेशा बजेंगी, म्यूट नहीं होंगी)
       playTempleBell(freq = 880) {
         this.init();
         if (!this.ctx) return;
@@ -545,7 +543,7 @@
     });
 
     /* =========================================================================
-       2. पुष्प वर्षा, स्वर्णिम कण व आतिशबाजी (Canvas Particles)
+       2. पुष्प वर्षा एवं स्वर्णिम प्रभाव
        ========================================================================= */
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
@@ -686,7 +684,7 @@
     renderParticles();
 
     /* =========================================================================
-       3. उपयोगकर्ता द्वारा प्रदान की गई सटीक फाइलें
+       3. आपकी मूल तस्वीरों के सटीक नाम
        ========================================================================= */
     const IMG_SANCTUM_NIGHT   = "Screenshot_20260929-212039.png";
     const IMG_TEMPLE_JEWELED  = "Screenshot_20260929-212048.png";
@@ -710,7 +708,7 @@
         nextBtn.removeEventListener('click', clickHandler);
         onNextCallback();
       };
-      nextBtn.addEventListener('click', clickHandler);
+      nextBtn.onclick = clickHandler;
     }
 
     function renderStage(stage) {
@@ -1102,7 +1100,7 @@
           };
           break;
 
-        /* ---------------- STAGE 17: महा आरती (संगीत स्वतः परिवर्तन व दीपक परिक्रमा) ---------------- */
+        /* ---------------- STAGE 17: महा आरती ---------------- */
         case 17:
           sound.switchToAartiTrack();
           container.innerHTML = `
@@ -1112,12 +1110,10 @@
             <div class="aarti-stage-wrapper fade-in">
               <div class="aarti-orbit-ring"></div>
               
-              <!-- केंद्र में माता रानी का स्वरूप -->
               <div class="mata-darshan-frame" style="width: 240px; height: 240px; margin: 0; z-index: 2;">
                 <img src="${IMG_SHERAWALI_LION}" alt="माँ शेरावाली आरती" style="max-height: 100%;" />
               </div>
 
-              <!-- माता रानी के चारों ओर घूमने वाला पावन दीपक -->
               <div id="moving-diya" class="revolving-diya">🪔</div>
             </div>
 
@@ -1135,17 +1131,14 @@
             sound.playShankh();
             triggerFlowerShower(50);
 
-            // दीपक की परिक्रमा प्रारंभ
             const diya = document.getElementById('moving-diya');
             diya.classList.add('animate-aarti-revolution');
 
-            // परिक्रमा के दौरान समय-समय पर घंटियाँ बजना
             const bellInterval = setInterval(() => {
               sound.playTempleBell(880 + Math.random() * 200);
               triggerFlowerShower(12);
             }, 1800);
 
-            // 7.5 सेकंड की परिक्रमा के बाद आशीर्वाद
             setTimeout(() => {
               clearInterval(bellInterval);
               showBlessing("माता रानी आपके और आपके परिवार पर अपनी कृपा और आशीर्वाद सदैव बनाए रखें।", () => renderStage(18));
@@ -1161,7 +1154,6 @@
             </div>
             <h1 class="devotional-title fade-in">🌺 शुभ नवरात्रि 🌺</h1>
             
-            <!-- अनुज शर्मा की ओर से हार्दिक शुभकामनाएँ -->
             <div class="anuj-badge fade-in" style="font-size: 1.15rem; padding: 8px 22px; color: #ffe599; border-color: gold; margin: 8px 0;">
               🌺 अनुज शर्मा की ओर से पावन नवरात्रि की हार्दिक शुभकामनाएँ 🌺
             </div>
@@ -1195,10 +1187,9 @@
           break;
 
         /* ---------------- STAGE 20: अंतिम परम दिव्य दर्शन ---------------- */
-        /* ---------------- STAGE 20: अंतिम परम दिव्य दर्शन ---------------- */
         case 20:
           container.innerHTML = `
-            <div class="mata-darshan-frame fade-in" style="width: min(88vmin, 460px); max-height: 46vh;">
+            <div class="mata-darshan-frame fade-in" style="width: min(88vmin, 460px); max-height: 38vh;">
               <img src="${IMG_SHERAWALI_LION}" alt="शेरावाली माता अंतिम दर्शन" />
             </div>
             
