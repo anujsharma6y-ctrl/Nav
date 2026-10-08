@@ -628,4 +628,185 @@
     const blessingText = document.getElementById('blessing-content');
     const nextBtn = document.getElementById('blessing-next-btn');
 
+    let currentStage = 0;
+    let selectedAnswer = null;
+    let aartiRotation = 0;
+    let plateDragStart = null;
+
+    function setBlessing(message) {
+      blessingText.textContent = message;
+      modal.classList.add('active');
+      nextBtn.focus();
+    }
+
+    function closeBlessing() {
+      modal.classList.remove('active');
+    }
+
+    function markCorrectAnswer(button) {
+      document.querySelectorAll('.quiz-card').forEach(card => {
+        card.style.borderColor = 'rgba(247, 208, 112, 0.4)';
+        card.style.background = 'rgba(40, 2, 7, 0.85)';
+      });
+      button.style.borderColor = '#ffe89e';
+      button.style.background = 'rgba(120, 24, 19, 0.95)';
+      selectedAnswer = button.dataset.answer;
+    }
+
+    function renderIntroStage() {
+      currentStage = 0;
+      closeBlessing();
+      container.innerHTML = `
+        <div class="mata-darshan-frame">
+          <img src="${IMG_SANCTUM_NIGHT}" alt="माँ शेरावाली" onerror="this.onerror=null;this.style.display='none';this.parentElement.innerHTML='<div style=\'font-size:4rem;\'>🙏</div>'" />
+        </div>
+        <h1 class="devotional-title">माँ शेरावाली दिव्य नवरात्रि यात्रा</h1>
+        <p class="instruction-text">आइए मंदिर की पवित्र ध्वनि, आशीर्वाद और भक्ति की सुंदर यात्रा में कदम रखें।</p>
+        <button id="start-journey" class="btn-divine touch-target">शुरू करें ✨</button>
+      `;
+
+      const startBtn = document.getElementById('start-journey');
+      startBtn.addEventListener('click', () => {
+        sound.playTempleBell(660);
+        renderQuizStage();
+      });
+    }
+
+    function renderQuizStage() {
+      currentStage = 1;
+      selectedAnswer = null;
+      container.innerHTML = `
+        <div class="mata-darshan-frame">
+          <img src="${IMG_TEMPLE_JEWELED}" alt="मंदिर दर्शन" onerror="this.onerror=null;this.style.display='none';this.parentElement.innerHTML='<div style=\'font-size:4rem;\'>🕉️</div>'" />
+        </div>
+        <h1 class="devotional-title">भक्ति का प्रश्न</h1>
+        <p class="instruction-text">माँ शेरावाली को किस रूप में पूजा जाता है?</p>
+        <div class="options-grid">
+          <button class="quiz-card" data-answer="A">सूर्यदेव</button>
+          <button class="quiz-card" data-answer="B">शेरावाली माँ</button>
+          <button class="quiz-card" data-answer="C">गंगा माँ</button>
+          <button class="quiz-card" data-answer="D">कृष्ण भगवान</button>
+        </div>
+        <button id="answer-next" class="btn-divine touch-target" disabled>जवाब चुनें</button>
+      `;
+
+      document.querySelectorAll('.quiz-card').forEach(card => {
+        card.addEventListener('click', () => {
+          markCorrectAnswer(card);
+          const nextBtnElement = document.getElementById('answer-next');
+          nextBtnElement.disabled = false;
+          nextBtnElement.textContent = 'आगे बढ़ें';
+        });
+      });
+
+      const nextButton = document.getElementById('answer-next');
+      nextButton.addEventListener('click', () => {
+        if (!selectedAnswer) return;
+        sound.playShankh();
+        if (selectedAnswer === 'B') {
+          setBlessing('सही उत्तर! माँ शेरावाली की कृपा से आपके मन में विश्वास और उजाला आ गया है।');
+          nextBtn.textContent = 'मंदिर में प्रवेश करें';
+        } else {
+          setBlessing('आपने सही पहचान चुनी, अब माँ शेरावाली के चरणों में श्रद्धा से आगे बढ़ें।');
+          nextBtn.textContent = 'मंदिर में प्रवेश करें';
+        }
+        nextBtn.onclick = () => {
+          closeBlessing();
+          renderDoorStage();
+        };
+      });
+    }
+
+    function renderDoorStage() {
+      currentStage = 2;
+      container.innerHTML = `
+        <div class="door-wrapper" id="temple-door">
+          <div class="door-panel door-left"><span style="font-size:2.4rem;">ॐ</span></div>
+          <div class="door-panel door-right"><span style="font-size:2.4rem;">ॐ</span></div>
+        </div>
+        <h1 class="devotional-title">मंदिर का द्वार</h1>
+        <p class="instruction-text">भक्ति के साथ द्वार खुलते हैं, आरती की ज्योति आपको असीम शांति देती है।</p>
+        <button id="open-doors" class="btn-divine touch-target">द्वार खोलें</button>
+      `;
+
+      setTimeout(() => {
+        const door = document.getElementById('temple-door');
+        if (door) door.classList.add('door-open');
+      }, 250);
+
+      document.getElementById('open-doors').addEventListener('click', () => {
+        sound.playTempleBell(1040);
+        renderAartiStage();
+      });
+    }
+
+    function renderAartiStage() {
+      currentStage = 3;
+      container.innerHTML = `
+        <div class="mata-darshan-frame">
+          <img src="${IMG_SHERAWALI_LION}" alt="शेरावाली माँ" onerror="this.onerror=null;this.style.display='none';this.parentElement.innerHTML='<div style=\'font-size:4rem;\'>🐎</div>'" />
+        </div>
+        <h1 class="devotional-title">आरती का प्रसाद</h1>
+        <p class="instruction-text">करेली-दीप की लौ को अपनी भक्ति की सुगंध से घुमाएँ।</p>
+        <div class="aarti-plate-container touch-target" id="aarti-plate" aria-label="आरती प्लेट"><span style="font-size:3rem;">🪔</span></div>
+        <button id="complete-aarti" class="btn-divine touch-target">आरती करें</button>
+      `;
+
+      const plate = document.getElementById('aarti-plate');
+      plate.addEventListener('pointerdown', (event) => {
+        plateDragStart = { x: event.clientX, y: event.clientY, rotation: aartiRotation };
+        plate.setPointerCapture(event.pointerId);
+      });
+
+      plate.addEventListener('pointermove', (event) => {
+        if (plateDragStart === null) return;
+        const dx = event.clientX - plateDragStart.x;
+        const dy = event.clientY - plateDragStart.y;
+        aartiRotation = plateDragStart.rotation + (dx + dy) * 0.35;
+        plate.style.transform = `rotate(${aartiRotation}deg)`;
+      });
+
+      plate.addEventListener('pointerup', () => {
+        plateDragStart = null;
+      });
+
+      document.getElementById('complete-aarti').addEventListener('click', () => {
+        sound.playManjira();
+        setBlessing('जगदम्बा शेरावाली की कृपा आप पर सदा बनी रहे। आपका मन शांति, धैर्य और प्रेम से भर जाए।');
+        nextBtn.textContent = 'आशीर्वाद देखें';
+        nextBtn.onclick = () => {
+          closeBlessing();
+          renderFinalTribute();
+        };
+      });
+    }
+
+    function renderFinalTribute() {
+      currentStage = 4;
+      container.innerHTML = `
+        <div class="mata-darshan-frame">
+          <img src="${IMG_TEMPLE_JEWELED}" alt="माँ का आशीर्वाद" onerror="this.onerror=null;this.style.display='none';this.parentElement.innerHTML='<div style=\'font-size:4rem;\'>🌺</div>'" />
+        </div>
+        <h1 class="devotional-title">जय माँ शेरावाली</h1>
+        <p class="instruction-text">तुम्हारा विश्वास, तुम्हारी भक्ति, और तुम्हारा प्रेम ही सबसे बड़ा आरती है।</p>
+        <div class="final-tribute">ॐ सर्व मंगल मांगल्ये, शिवे सर्वार्थसाधिके।</div>
+        <button id="restart-journey" class="btn-divine touch-target">फिर से यात्रा शुरू करें</button>
+      `;
+
+      document.getElementById('restart-journey').addEventListener('click', () => {
+        aartiRotation = 0;
+        renderIntroStage();
+      });
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (modal.classList.contains('active')) return;
+      if (currentStage === 0) renderQuizStage();
+    });
+
+    renderIntroStage();
+  </script>
+</body>
+</html>
+
   
