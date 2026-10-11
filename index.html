@@ -501,12 +501,17 @@
         overtone.stop(now + 1.7);
       }
 
-      playShankh() {
+      async playShankh() {
         this.init();
         if (!this.ctx) return;
-        if (this.ctx.state === 'suspended') this.ctx.resume();
+        try {
+          if (this.ctx.state !== 'running') await this.ctx.resume();
+        } catch (err) {
+          console.warn('Audio could not start. Tap the shankh again or check device media volume.', err);
+          return;
+        }
 
-        // Layered, conch-like shankh tone. Starts on a tap so mobile browsers allow audio.
+        // Start only after the mobile browser has resumed audio from the user's tap.
         const now = this.ctx.currentTime;
         const master = this.ctx.createGain();
         master.gain.setValueAtTime(0.0001, now);
@@ -627,7 +632,4 @@
       }
     }
 
-    for (let i = 0; i < 28; i++) petals.push(new SacredPetal());
-    for (let i = 0; i < 65; i++) sparks.push(new GoldenSpark());
-
-    function triggerFlowerShower(multiplier = 3
+    
