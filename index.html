@@ -70,13 +70,13 @@
       100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.95; }
     }
 
-    /* संगीत चालू/बंद बटण */
+    /* केवल संगीत का ऑन/ऑफ बटन */
     .music-btn {
       position: fixed;
       top: 18px;
       right: 18px;
       z-index: 100;
-      background: rgba(35, 2, 6, 0.88);
+      background: rgba(35, 2, 6, 0.82);
       border: 1.5px solid var(--gold);
       color: var(--gold);
       padding: 8px 18px;
@@ -191,7 +191,7 @@
     .touch-target:hover { transform: scale(1.1); filter: drop-shadow(0 0 15px gold); }
     .touch-target:active { transform: scale(0.95); }
 
-    /* कवाड */
+    /* मंदिर के कपाट */
     .door-wrapper {
       position: relative;
       width: 280px;
@@ -223,7 +223,7 @@
     .door-open .door-left { transform: rotateY(-115deg); }
     .door-open .door-right { transform: rotateY(115deg); }
 
-    /* आरती दिव्या भोंवतणी भोंवडी */
+    /* आरती दीपक परिक्रमा कंटेनर */
     .aarti-stage-wrapper {
       position: relative;
       width: min(85vmin, 380px);
@@ -300,7 +300,7 @@
       margin-bottom: 26px;
     }
 
-    /* अनुज शर्मा खाशेलें बॅनार */
+    /* अंतिम स्क्रीन का विशेष अनुज शर्मा शुभकामना बैनर */
     .final-tribute-banner {
       width: 100%;
       max-width: min(900px, 94vw);
@@ -354,11 +354,18 @@
 </head>
 <body>
 
-  <!-- पार्श्वसंगीत ऑडिओ फाइली -->
-  <audio id="walkthrough-audio" loop preload="auto" src="O_Aaye_Tere_Bhawan_Music_by_Sonu_nigam_remix_by_Dj_Virat_Hajip.m4a"></audio>
-  <audio id="aarti-audio" loop preload="auto" src="xyz.mp3"></audio>
+  <!-- पृष्ठभूमि संगीत (प्रारंभिक यात्रा हेतु) -->
+  <audio id="walkthrough-audio" loop preload="auto">
+    <source src="O_Aaye_Tere_Bhawan_Music_by_Sonu_nigam_remix_by_Dj_Virat_Hajip.m4a" type="audio/mp4">
+  </audio>
 
-  <!-- संगीत चालू/बंद बटण -->
+  <!-- महा आरती संगीत -->
+  <audio id="aarti-audio" loop preload="auto">
+    <source src="xyz.mp3" type="audio/mpeg">
+    <source src="xyz.m4a" type="audio/mp4">
+  </audio>
+
+  <!-- संगीत चालू/बंद बटन -->
   <button id="music-toggle" class="music-btn" aria-label="संगीत नियंत्रण">🎵 संगीत: चालू</button>
 
   <canvas id="bg-canvas"></canvas>
@@ -377,7 +384,7 @@
 
   <script>
     /* =========================================================================
-       1. ऑडिओ सिस्टम
+       1. ध्वनियाँ एवं संगीत प्रबंधन
        ========================================================================= */
     class DevotionalSoundEngine {
       constructor() {
@@ -388,31 +395,21 @@
       }
 
       init() {
-        if (!this.initialized) {
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (AudioCtx) this.ctx = new AudioCtx();
-          this.initialized = true;
-        }
-        if (this.ctx && this.ctx.state === 'suspended') {
-          this.ctx.resume();
-        }
+        if (this.initialized) return;
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        this.ctx = new AudioCtx();
+        this.initialized = true;
       }
 
       startWalkthroughTrack() {
-        this.init();
-        this.currentMode = 'walkthrough';
         const wtAudio = document.getElementById('walkthrough-audio');
         if (wtAudio && !this.musicMuted) {
-          wtAudio.volume = 0.75;
-          const promise = wtAudio.play();
-          if (promise !== undefined) {
-            promise.catch(e => console.log("यात्रा संगीत चालू जावंक ना:", e));
-          }
+          wtAudio.volume = 0.65;
+          wtAudio.play().catch(() => {});
         }
       }
 
       switchToAartiTrack() {
-        this.init();
         this.currentMode = 'aarti';
         const wtAudio = document.getElementById('walkthrough-audio');
         const aartiAudio = document.getElementById('aarti-audio');
@@ -423,16 +420,12 @@
         }
 
         if (aartiAudio && !this.musicMuted) {
-          aartiAudio.volume = 0.85;
-          const promise = aartiAudio.play();
-          if (promise !== undefined) {
-            promise.catch(e => console.log("आरती संगीत चालू जावंक ना:", e));
-          }
+          aartiAudio.volume = 0.75;
+          aartiAudio.play().catch(() => {});
         }
       }
 
       toggleMusic() {
-        this.init();
         this.musicMuted = !this.musicMuted;
         const wtAudio = document.getElementById('walkthrough-audio');
         const aartiAudio = document.getElementById('aarti-audio');
@@ -441,10 +434,10 @@
           if (wtAudio) wtAudio.pause();
           if (aartiAudio) aartiAudio.pause();
         } else {
-          if (this.currentMode === 'walkthrough') {
-            this.startWalkthroughTrack();
-          } else {
-            this.switchToAartiTrack();
+          if (this.currentMode === 'walkthrough' && wtAudio) {
+            wtAudio.play().catch(() => {});
+          } else if (this.currentMode === 'aarti' && aartiAudio) {
+            aartiAudio.play().catch(() => {});
           }
         }
         return !this.musicMuted;
@@ -453,61 +446,61 @@
       playTempleBell(freq = 880) {
         this.init();
         if (!this.ctx) return;
-        try {
-          const now = this.ctx.currentTime;
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
+        if (this.ctx.state === 'suspended') this.ctx.resume();
 
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now);
-          gain.gain.setValueAtTime(0.4, now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
 
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(now);
-          osc.stop(now + 2.9);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
 
-          const overtone = this.ctx.createOscillator();
-          const overGain = this.ctx.createGain();
-          overtone.type = 'triangle';
-          overtone.frequency.setValueAtTime(freq * 2.76, now);
-          overGain.gain.setValueAtTime(0.18, now);
-          overGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
-          overtone.connect(overGain);
-          overGain.connect(this.ctx.destination);
-          overtone.start(now);
-          overtone.stop(now + 1.7);
-        } catch(e) {}
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 2.9);
+
+        const overtone = this.ctx.createOscillator();
+        const overGain = this.ctx.createGain();
+        overtone.type = 'triangle';
+        overtone.frequency.setValueAtTime(freq * 2.76, now);
+        overGain.gain.setValueAtTime(0.18, now);
+        overGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
+        overtone.connect(overGain);
+        overGain.connect(this.ctx.destination);
+        overtone.start(now);
+        overtone.stop(now + 1.7);
       }
 
       playShankh() {
         this.init();
         if (!this.ctx) return;
-        try {
-          const now = this.ctx.currentTime;
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
+        if (this.ctx.state === 'suspended') this.ctx.resume();
 
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(180, now);
-          osc.frequency.exponentialRampToValueAtTime(260, now + 1.2);
-          osc.frequency.exponentialRampToValueAtTime(210, now + 3.2);
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
 
-          const filter = this.ctx.createBiquadFilter();
-          filter.type = 'lowpass';
-          filter.frequency.setValueAtTime(450, now);
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(260, now + 1.2);
+        osc.frequency.exponentialRampToValueAtTime(210, now + 3.2);
 
-          gain.gain.setValueAtTime(0.01, now);
-          gain.gain.linearRampToValueAtTime(0.45, now + 0.9);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.8);
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(450, now);
 
-          osc.connect(filter);
-          filter.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(now);
-          osc.stop(now + 3.9);
-        } catch(e) {}
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.45, now + 0.9);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.8);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 3.9);
       }
 
       playManjira() {
@@ -517,14 +510,13 @@
 
     const sound = new DevotionalSoundEngine();
     const musicBtn = document.getElementById('music-toggle');
-    musicBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
+    musicBtn.addEventListener('click', () => {
       const isPlaying = sound.toggleMusic();
       musicBtn.textContent = isPlaying ? '🎵 संगीत: चालू' : '🔇 संगीत: बंद';
     });
 
     /* =========================================================================
-       2. फुलांचो शिंवर आनी कण (Canvas Particles)
+       2. पुष्प वर्षा एवं स्वर्णिम प्रभाव
        ========================================================================= */
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
@@ -645,4 +637,14 @@
         f.y += f.vy;
         f.vy += 0.05;
         f.alpha -= 0.02;
+        if (f.alpha <= 0) {
+          fireworks.splice(i, 1);
+          continue;
+        }
+        fxCtx.save();
+        fxCtx.fillStyle = f.color;
+        fxCtx.globalAlpha = f.alpha;
+        fxCtx.shadowBlur = 12;
+        fxCtx.shadowColor = 'gold';
+        fxCtx.beginPath
        
