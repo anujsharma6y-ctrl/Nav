@@ -780,29 +780,7 @@
           break;
 
         /* ---------------- STAGE 4: प्रथम प्रश्न (त्रिशूल) ---------------- */
-        case 4:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">दिव्य पहचान</h1>
-            <p class="instruction-text fade-in">माता रानी के हाथ में कौन-सा दिव्य अस्त्र दिखाई देता है?</p>
-            <div class="options-grid fade-in">
-              <button class="quiz-card" data-ans="त्रिशूल">त्रिशूल</button>
-              <button class="quiz-card" data-ans="कलम">कलम</button>
-              <button class="quiz-card" data-ans="दीपक">दीपक</button>
-              <button class="quiz-card" data-ans="पुस्तक">पुस्तक</button>
-            </div>
-            <p id="quiz-msg" style="color: #ffc97a; min-height: 28px;"></p>
-          `;
-          document.querySelectorAll('.quiz-card').forEach(b => {
-            b.onclick = () => {
-              if (b.dataset.ans === "त्रिशूल") {
-                sound.playTempleBell(880);
-                showBlessing("माँ दुर्गा आपको हर संकट का सामना करने की शक्ति, साहस और विजय प्रदान करें।", () => renderStage(5));
-              } else {
-                document.getElementById('quiz-msg').textContent = "पुनः प्रयास करें 🙏";
-              }
-            };
-          });
-          break;
+        
 
         /* ---------------- STAGE 5: मंदिर की घंटियाँ ---------------- */
         case 5:
@@ -834,32 +812,7 @@
           break;
 
         /* ---------------- STAGE 6: सिंह वाहिनी का मार्ग ---------------- */
-        case 6:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">दिव्य सिंह की यात्रा</h1>
-            <p class="instruction-text fade-in">दिव्य प्रकाश के मार्ग पर आगे बढ़ें।</p>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 30px 0;">
-              <span style="font-size: 3.5rem;">🦁</span>
-              <button class="touch-target path-dot" style="font-size: 2.2rem; background:none; border:none;">✨</button>
-              <button class="touch-target path-dot" style="font-size: 2.2rem; background:none; border:none;">✨</button>
-              <button class="touch-target path-dot" style="font-size: 2.2rem; background:none; border:none;">✨</button>
-              <span style="font-size: 3.5rem;">🛕</span>
-            </div>
-            <p id="lion-hint" style="color: var(--gold);">चमकते प्रकाश बिंदुओं को स्पर्श कर मार्ग प्रशस्त करें</p>
-          `;
-          let dots = 0;
-          document.querySelectorAll('.path-dot').forEach(dot => {
-            dot.onclick = () => {
-              if (dot.style.visibility === 'hidden') return;
-              sound.playManjira();
-              dot.style.visibility = 'hidden';
-              dots++;
-              if (dots === 3) {
-                showBlessing("माता रानी आपको हर कठिनाई के सामने अडिग रहने का साहस और आत्मविश्वास प्रदान करें।", () => renderStage(7));
-              }
-            };
-          });
-          break;
+        
 
         /* ---------------- STAGE 7: मंदिर का कपाट खुलना और चित्र प्रकटीकरण ---------------- */
         case 7:
@@ -898,56 +851,10 @@
           break;
 
         /* ---------------- STAGE 8: द्वितीय प्रश्न (दीपक) ---------------- */
-        case 8:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">भक्ति का प्रकाश</h1>
-            <p class="instruction-text fade-in">नवरात्रि में माता रानी के स्वागत के लिए इनमें से क्या प्रज्वलित किया जाता है?</p>
-            <div class="options-grid fade-in">
-              <button class="quiz-card" data-ans="दीपक">दीपक 🪔</button>
-              <button class="quiz-card" data-ans="पतंग">पतंग</button>
-              <button class="quiz-card" data-ans="खिलौना">खिलौना</button>
-              <button class="quiz-card" data-ans="कागज़">कागज़</button>
-            </div>
-            <p id="quiz-msg2" style="color: #ffc97a; min-height: 28px;"></p>
-          `;
-          document.querySelectorAll('.quiz-card').forEach(b => {
-            b.onclick = () => {
-              if (b.dataset.ans === "दीपक") {
-                sound.playTempleBell(880);
-                showBlessing("माता रानी आपके जीवन के हर मार्ग को प्रकाश और सफलता से भर दें।", () => renderStage(9));
-              } else {
-                document.getElementById('quiz-msg2').textContent = "पुनः प्रयास करें 🙏";
-              }
-            };
-          });
-          break;
+        
 
         /* ---------------- STAGE 9: मंगल कलश स्थापना ---------------- */
-        case 9:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">कलश पूजन</h1>
-            <p class="instruction-text fade-in">कलश स्थापना हेतु पावन पूजन सामग्री को स्पर्श करें।</p>
-            <div style="display: flex; gap: 18px; justify-content: center; margin: 25px 0;">
-              <span class="touch-target kalash-item" style="font-size: 3.5rem;">🏺</span>
-              <span class="touch-target kalash-item" style="font-size: 3.5rem;">🥥</span>
-              <span class="touch-target kalash-item" style="font-size: 3.5rem;">🍃</span>
-              <span class="touch-target kalash-item" style="font-size: 3.5rem;">🪔</span>
-            </div>
-            <p id="kalash-note" style="color: var(--gold);">कलश, नारियल, आम्रपल्लव और दीपक को पावन वेदी पर सजाएं</p>
-          `;
-          let kCount = 0;
-          document.querySelectorAll('.kalash-item').forEach(item => {
-            item.onclick = () => {
-              if (item.style.opacity === '0.3') return;
-              sound.playManjira();
-              item.style.opacity = '0.3';
-              kCount++;
-              if (kCount === 4) {
-                showBlessing("माता रानी आपके घर में सुख, समृद्धि, शांति और मंगल का सदैव वास करें।", () => renderStage(10));
-              }
-            };
-          });
-          break;
+        
 
         /* ---------------- STAGE 10: दिव्य कमल ---------------- */
         case 10:
@@ -968,104 +875,15 @@
           break;
 
         /* ---------------- STAGE 11: तृतीय प्रश्न (सवारी) ---------------- */
-        case 11:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">माता की सवारी</h1>
-            <p class="instruction-text fade-in">माता रानी की पावन सवारी कौन है?</p>
-            <div class="options-grid fade-in">
-              <button class="quiz-card" data-ans="सिंह">सिंह 🦁</button>
-              <button class="quiz-card" data-ans="हाथी">हाथी</button>
-              <button class="quiz-card" data-ans="घोड़ा">घोड़ा</button>
-              <button class="quiz-card" data-ans="मोर">मोर</button>
-            </div>
-            <p id="quiz-msg3" style="color: #ffc97a; min-height: 28px;"></p>
-          `;
-          document.querySelectorAll('.quiz-card').forEach(b => {
-            b.onclick = () => {
-              if (b.dataset.ans === "सिंह") {
-                sound.playTempleBell(987);
-                showBlessing("माँ दुर्गा आपको शक्ति, साहस और विजय का आशीर्वाद प्रदान करें।", () => renderStage(12));
-              } else {
-                document.getElementById('quiz-msg3').textContent = "पुनः प्रयास करें 🙏";
-              }
-            };
-          });
-          break;
-
+        
         /* ---------------- STAGE 12: दिव्य आकाश ---------------- */
-        case 12:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">दिव्य नभ</h1>
-            <p class="instruction-text fade-in">आकाश के पावन नक्षत्रों को स्पर्श कर ज्योति जलाएँ।</p>
-            <div style="display: flex; gap: 15px; justify-content: center; margin: 25px 0;">
-              <span class="touch-target sky-star" style="font-size: 3rem;">⭐</span>
-              <span class="touch-target sky-star" style="font-size: 3rem;">⭐</span>
-              <span class="touch-target sky-star" style="font-size: 3rem;">⭐</span>
-            </div>
-            <h2 id="sky-banner" style="color: gold; font-family: var(--font-display); opacity: 0; transition: opacity 0.8s; font-size: 2.2rem;">जय माता दी</h2>
-          `;
-          let starsLit = 0;
-          document.querySelectorAll('.sky-star').forEach(st => {
-            st.onclick = () => {
-              if (st.style.visibility === 'hidden') return;
-              st.style.visibility = 'hidden';
-              sound.playManjira();
-              starsLit++;
-              if (starsLit === 3) {
-                document.getElementById('sky-banner').style.opacity = '1';
-                setTimeout(() => {
-                  showBlessing("माता रानी की कृपा आपके जीवन के हर आकाश को प्रकाशमय बनाए।", () => renderStage(13));
-                }, 800);
-              }
-            };
-          });
-          break;
+        
+          
 
         /* ---------------- STAGE 13: लाल चुनरी अर्पण ---------------- */
-        case 13:
-          container.innerHTML = `
-            <div class="mata-darshan-frame fade-in">
-              <img src="${IMG_TEMPLE_JEWELED}" alt="माँ शेरावाली चुनरी अर्पण" />
-            </div>
-            <h1 class="devotional-title fade-in">श्रद्धा की चुनरी</h1>
-            <p class="instruction-text fade-in">माता रानी को श्रद्धा की चुनरी अर्पित करें।</p>
-            <div id="chunri-item" class="touch-target fade-in" style="font-size: 4.8rem; margin: 10px 0;">🧣</div>
-            <button id="chunri-offer-btn" class="btn-divine">चुनरी अर्पित करें 🙏</button>
-          `;
-          const offerChunri = () => {
-            sound.playTempleBell(880);
-            triggerFlowerShower(30);
-            showBlessing("माता रानी अपनी कृपा की छत्रछाया में आपको और आपके परिवार को सदैव सुरक्षित रखें।", () => renderStage(14));
-          };
-          document.getElementById('chunri-item').onclick = offerChunri;
-          document.getElementById('chunri-offer-btn').onclick = offerChunri;
-          break;
-
+        
         /* ---------------- STAGE 14: पावन धाम की ओर ---------------- */
-        case 14:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">पावन पदचाप</h1>
-            <p class="instruction-text fade-in">आगे बढ़ने हेतु प्रकाशित दीपकों को स्पर्श करें।</p>
-            <div style="display: flex; gap: 20px; justify-content: center; margin: 30px 0;">
-              <span class="touch-target path-diya" style="font-size: 3.5rem;">🪔</span>
-              <span class="touch-target path-diya" style="font-size: 3.5rem;">🪔</span>
-              <span class="touch-target path-diya" style="font-size: 3.5rem;">🪔</span>
-            </div>
-            <p style="color: var(--gold);">धाम के मार्ग पर प्रकाश फैलाएं</p>
-          `;
-          let pathD = 0;
-          document.querySelectorAll('.path-diya').forEach(d => {
-            d.onclick = () => {
-              if (d.style.visibility === 'hidden') return;
-              d.style.visibility = 'hidden';
-              sound.playTempleBell(784);
-              pathD++;
-              if (pathD === 3) {
-                showBlessing("माता रानी आपके हर कदम को सही दिशा और हर प्रयास को सफलता प्रदान करें।", () => renderStage(15));
-              }
-            };
-          });
-          break;
+        
 
         /* ---------------- STAGE 15: शंखनाद ---------------- */
         case 15:
