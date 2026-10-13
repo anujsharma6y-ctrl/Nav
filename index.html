@@ -802,10 +802,8 @@
           };
           break;
 
-       
-
-        /* ---------------- चरण 7: मंगलमय शंखनाद ---------------- */
-        case 7:
+        /* ---------------- चरण 6: मंगलमय शंखनाद ---------------- */
+        case 6:
           container.innerHTML = `
             <h1 class="devotional-title fade-in">मंगलमय शंखनाद</h1>
             <p class="instruction-text fade-in">मंगलमय शंख ध्वनि के साथ दिव्य वातावरण का स्वागत करें।</p>
@@ -816,29 +814,13 @@
             sound.playShankh();
             triggerFlowerShower(40);
             setTimeout(() => {
-              showBlessing("माता रानी के आशीर्वाद से आपके जीवन में हर दिन मंगल, शांति और सकारात्मकता बनी रहे।", () => renderStage(8));
+              showBlessing("माता रानी के आशीर्वाद से आपके जीवन में हर दिन मंगल, शांति और सकारात्मकता बनी रहे।", () => renderStage(7));
             }, 1200);
           };
           break;
 
-        /* ---------------- चरण 8: दिव्य दर्शन ---------------- */
-        case 8:
-          container.innerHTML = `
-            <div class="mata-darshan-frame fade-in">
-              <img src="${IMG_SHERAWALI_LION}" alt="माँ शेरावाली दर्शन" />
-            </div>
-            <h1 class="devotional-title fade-in">माँ का आलोक</h1>
-            <p class="instruction-text fade-in">माँ का यह दिव्य प्रकाश आपके जीवन से हर चिंता और अंधकार को दूर करे।</p>
-            <button id="darshan-btn" class="btn-divine fade-in">दर्शन करें 🙏</button>
-          `;
-          document.getElementById('darshan-btn').onclick = () => {
-            sound.playTempleBell(880);
-            showBlessing("माँ का यह दिव्य प्रकाश आपके जीवन से हर चिंता और अंधकार को दूर करे।", () => renderStage(9));
-          };
-          break;
-
-        /* ---------------- चरण 9: महा आरती (आरती गीत स्वतः प्रारंभ व दीपक परिक्रमा) ---------------- */
-        case 9:
+        /* ---------------- चरण 7: दिव्य दर्शन और आरती ---------------- */
+        case 7:
           sound.switchToAartiTrack();
           container.innerHTML = `
             <h1 class="devotional-title fade-in">महा आरती</h1>
@@ -846,23 +828,20 @@
             
             <div class="aarti-stage-wrapper fade-in">
               <div class="aarti-orbit-ring"></div>
-              
               <div class="mata-darshan-frame" style="width: 240px; height: 240px; margin: 0; z-index: 2;">
                 <img src="${IMG_SHERAWALI_LION}" alt="माँ शेरावाली आरती" style="max-height: 100%;" />
               </div>
-
               <div id="moving-diya" class="revolving-diya">🪔</div>
             </div>
-
             <div style="margin-top: 15px;">
               <button id="start-aarti-btn" class="btn-divine">आरती प्रारंभ करें 🔔</button>
             </div>
           `;
 
-          const startBtn = document.getElementById('start-aarti-btn');
-          startBtn.onclick = () => {
-            startBtn.disabled = true;
-            startBtn.textContent = "आरती हो रही है... 🙏";
+          const aartiStartBtn = document.getElementById('start-aarti-btn');
+          aartiStartBtn.onclick = () => {
+            aartiStartBtn.disabled = true;
+            aartiStartBtn.textContent = "आरती हो रही है... 🙏";
             
             sound.playTempleBell(1046);
             sound.playShankh();
@@ -878,13 +857,13 @@
 
             setTimeout(() => {
               clearInterval(bellInterval);
-              showBlessing("माता रानी आपके और आपके परिवार पर अपनी कृपा और आशीर्वाद सदैव बनाए रखें।", () => renderStage(10));
+              showBlessing("माता रानी आपके और आपके परिवार पर अपनी कृपा और आशीर्वाद सदैव बनाए रखें।", () => renderStage(8));
             }, 7600);
           };
           break;
 
-        /* ---------------- चरण 10: अंतिम दिव्य आशीर्वाद ---------------- */
-        case 10:
+        /* ---------------- चरण 8: अंतिम दिव्य आशीर्वाद ---------------- */
+        case 8:
           container.innerHTML = `
             <div class="mata-darshan-frame fade-in" style="width: min(88vmin, 460px); max-height: 38vh;">
               <img src="${IMG_SHERAWALI_LION}" alt="शेरावाली माता अंतिम दर्शन" />
