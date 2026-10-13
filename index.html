@@ -735,7 +735,35 @@
             showBlessing("माता रानी आपके जीवन से हर अंधकार दूर कर ज्ञान और सुख की ज्योति जलाए रखें।", () => renderStage(3));
           };
           break;
-
+/* ---------------- चरण 3: पुष्प अर्पण ---------------- */
+        case 3:
+          container.innerHTML = `
+            <h1 class="devotional-title fade-in">पुष्प अर्पण</h1>
+            <p class="instruction-text fade-in">माता रानी के चरणों में पुष्प अर्पित करें।</p>
+            <div style="display: flex; gap: 20px; justify-content: center; margin: 25px 0;">
+              <span class="touch-target flower-item" style="font-size: 3.5rem;">🌹</span>
+              <span class="touch-target flower-item" style="font-size: 3.5rem;">🪷</span>
+              <span class="touch-target flower-item" style="font-size: 3.5rem;">🌼</span>
+              <span class="touch-target flower-item" style="font-size: 3.5rem;">🌺</span>
+            </div>
+            <p id="flower-status" style="color: var(--gold);">सभी पुष्पों को स्पर्श कर माता रानी को अर्पित करें</p>
+          `;
+          let offered = 0;
+          document.querySelectorAll('.flower-item').forEach(el => {
+            el.addEventListener('click', () => {
+              if (el.style.visibility === 'hidden') return;
+              el.style.visibility = 'hidden';
+              sound.playManjira();
+              triggerFlowerShower(12);
+              offered++;
+              if (offered === 4) {
+                setTimeout(() => {
+                  showBlessing("माता रानी आपके जीवन को इन पुष्पों की तरह सुंदर, पवित्र और मंगलमय बनाए रखें।", () => renderStage(4));
+                }, 400);
+              }
+            });
+          });
+          break;
       
         
 
