@@ -723,49 +723,7 @@
           break;
 
         /* ---------------- चरण 2: ज्योति प्रज्वलन ---------------- */
-        case 2:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">पावन ज्योति</h1>
-            <p class="instruction-text fade-in">माता रानी के चरणों में श्रद्धा की ज्योति प्रज्वलित करें।</p>
-            <div id="diya-target" class="touch-target fade-in" style="font-size: 6rem; margin: 20px 0;">🪔</div>
-            <p style="color: var(--gold); font-size: 1.1rem;">(दीपक को स्पर्श करें)</p>
-          `;
-          document.getElementById('diya-target').onclick = () => {
-            sound.playTempleBell(1046);
-            showBlessing("माता रानी आपके जीवन से हर अंधकार दूर कर ज्ञान और सुख की ज्योति जलाए रखें।", () => renderStage(3));
-          };
-          break;
-
-        /* ---------------- चरण 3: पुष्प अर्पण ---------------- */
-        case 3:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">पुष्प अर्पण</h1>
-            <p class="instruction-text fade-in">माता रानी के चरणों में पुष्प अर्पित करें।</p>
-            <div style="display: flex; gap: 20px; justify-content: center; margin: 25px 0;">
-              <span class="touch-target flower-item" style="font-size: 3.5rem;">🌹</span>
-              <span class="touch-target flower-item" style="font-size: 3.5rem;">🪷</span>
-              <span class="touch-target flower-item" style="font-size: 3.5rem;">🌼</span>
-              <span class="touch-target flower-item" style="font-size: 3.5rem;">🌺</span>
-            </div>
-            <p id="flower-status" style="color: var(--gold);">सभी पुष्पों को स्पर्श कर माता रानी को अर्पित करें</p>
-          `;
-          let offered = 0;
-          document.querySelectorAll('.flower-item').forEach(el => {
-            el.addEventListener('click', () => {
-              if (el.style.visibility === 'hidden') return;
-              el.style.visibility = 'hidden';
-              sound.playManjira();
-              triggerFlowerShower(12);
-              offered++;
-              if (offered === 4) {
-                setTimeout(() => {
-                  showBlessing("माता रानी आपके जीवन को इन पुष्पों की तरह सुंदर, पवित्र और मंगलमय बनाए रखें।", () => renderStage(4));
-                }, 400);
-              }
-            });
-          });
-          break;
-
+       
         /* ---------------- चरण 4: मंदिर की घंटियाँ ---------------- */
         case 4:
           container.innerHTML = `
@@ -830,23 +788,7 @@
           break;
 
         /* ---------------- चरण 6: दिव्य कमल ---------------- */
-        case 6:
-          container.innerHTML = `
-            <h1 class="devotional-title fade-in">दिव्य कमल</h1>
-            <p class="instruction-text fade-in">दिव्य कमल को स्पर्श करें।</p>
-            <div id="lotus-el" class="touch-target fade-in" style="font-size: 6.5rem; margin: 25px 0; transition: transform 0.8s;">🪷</div>
-            <p style="color: var(--gold);">पवित्र कमल को विकसित होने दें</p>
-          `;
-          document.getElementById('lotus-el').onclick = () => {
-            sound.playTempleBell(1046);
-            document.getElementById('lotus-el').style.transform = 'scale(1.4) rotate(10deg)';
-            triggerFlowerShower(35);
-            setTimeout(() => {
-              showBlessing("माता रानी आपके जीवन को कमल की तरह निर्मल, सुंदर और उज्ज्वल बनाए रखें।", () => renderStage(7));
-            }, 600);
-          };
-          break;
-
+       
         /* ---------------- चरण 7: मंगलमय शंखनाद ---------------- */
         case 7:
           container.innerHTML = `
