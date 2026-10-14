@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Yatra+One&family=Tiro+Devanagari+Hindi:ital@0;1&family=Mukta:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <style> 
+  <style>
     :root {
       --gold: #f7d070;
       --gold-bright: #ffe89e;
@@ -318,7 +318,7 @@
       font-size: clamp(1.35rem, 3.2vw, 2.1rem);
       font-weight: 800;
       color: #fff8dc;
-      text-shadow: 
+      text-shadow:  
         0 2px 5px #000,
         0 0 12px rgba(255, 215, 0, 0.7);
       line-height: 1.4;
@@ -350,9 +350,9 @@
 </head>
 <body>
 
-  <!-- पृष्ठभूमि संगीत ऑडियो एलिमेंट्स (डायरेक्ट पाथ) -->
-  <audio id="walkthrough-audio" loop preload="auto" src="O_Aaye_Tere_Bhawan_Music_by_Sonu_nigam_remix_by_Dj_Virat_Hajip.m4a"></audio>
-  <audio id="aarti-audio" loop preload="auto" src="xyz.mp3"></audio>
+  <!-- पृष्ठभूमि संगीत ऑडियो एलिमेंट्स (आरती को 'none' रखा ताकि पहले गाने का पूरा बैंडविड्थ मिले) -->
+  <audio id="walkthrough-audio" loop preload="auto" playsinline webkit-playsinline src="O_Aaye_Tere_Bhawan_Music_by_Sonu_nigam_remix_by_Dj_Virat_Hajip.m4a"></audio>
+  <audio id="aarti-audio" loop preload="none" playsinline webkit-playsinline src="xyz.mp3"></audio>
 
   <!-- संगीत चालू/बंद बटन -->
   <button id="music-toggle" class="music-btn" aria-label="संगीत नियंत्रण">🎵 संगीत: चालू</button>
@@ -373,7 +373,7 @@
 
   <script>
     /* =========================================================================
-       1. सुरक्षित ऑडियो व साउंड सिस्टम (Autoplay-Safe Engine)
+       1. सुरक्षित ऑडियो व साउंड सिस्टम (Auto-Resume & Zero-Lag Engine)
        ========================================================================= */
     class DevotionalSoundEngine {
       constructor() {
@@ -381,6 +381,7 @@
         this.musicMuted = false;
         this.currentMode = 'walkthrough';
         this.initialized = false;
+        this.setupAudioListeners();
       }
 
       init() {
@@ -394,21 +395,37 @@
         }
       }
 
+      setupAudioListeners() {
+        const wtAudio = document.getElementById('walkthrough-audio');
+        if (wtAudio) {
+          // यदि बफ़र या नेटवर्क के कारण गाना रुके, तो लोड होते ही अपने आप जारी रखें
+          wtAudio.addEventListener('waiting', () => console.log("बफ़र हो रहा है..."));
+          wtAudio.addEventListener('canplay', () => {
+            if (!this.musicMuted && this.currentMode === 'walkthrough' && wtAudio.paused) {
+              wtAudio.play().catch(() => {});
+            }
+          });
+          wtAudio.addEventListener('error', (e) => console.warn("ऑडियो लोड त्रुटि:", e));
+        }
+      }
+
       startWalkthroughTrack() {
-        this.init();
         this.currentMode = 'walkthrough';
         const wtAudio = document.getElementById('walkthrough-audio');
         if (wtAudio && !this.musicMuted) {
           wtAudio.volume = 0.75;
           const promise = wtAudio.play();
           if (promise !== undefined) {
-            promise.catch(e => console.log("यात्रा संगीत प्रतीक्षा में:", e));
+            promise.catch(e => {
+              console.log("ऑडियो प्रतीक्षा में, पुनः प्रयास:", e);
+              // जेस्चर अनब्लॉक बैकअप
+              setTimeout(() => wtAudio.play().catch(() => {}), 150);
+            });
           }
         }
       }
 
       switchToAartiTrack() {
-        this.init();
         this.currentMode = 'aarti';
         const wtAudio = document.getElementById('walkthrough-audio');
         const aartiAudio = document.getElementById('aarti-audio');
@@ -422,13 +439,12 @@
           aartiAudio.volume = 0.85;
           const promise = aartiAudio.play();
           if (promise !== undefined) {
-            promise.catch(e => console.log("आरती संगीत प्रतीक्षा में:", e));
+            promise.catch(e => console.log("आरती ऑडियो प्रतीक्षा में:", e));
           }
         }
       }
 
       toggleMusic() {
-        this.init();
         this.musicMuted = !this.musicMuted;
         const wtAudio = document.getElementById('walkthrough-audio');
         const aartiAudio = document.getElementById('aarti-audio');
@@ -456,24 +472,24 @@
 
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, now);
-          gain.gain.setValueAtTime(0.4, now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.5);
 
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(now);
-          osc.stop(now + 2.9);
+          osc.stop(now + 2.6);
 
           const overtone = this.ctx.createOscillator();
           const overGain = this.ctx.createGain();
           overtone.type = 'triangle';
           overtone.frequency.setValueAtTime(freq * 2.76, now);
-          overGain.gain.setValueAtTime(0.18, now);
-          overGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
+          overGain.gain.setValueAtTime(0.15, now);
+          overGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
           overtone.connect(overGain);
           overGain.connect(this.ctx.destination);
           overtone.start(now);
-          overtone.stop(now + 1.7);
+          overtone.stop(now + 1.5);
         } catch(e) {}
       }
 
@@ -520,7 +536,7 @@
     });
 
     /* =========================================================================
-       2. पुष्प वर्षा एवं स्वर्णिम प्रभाव (Canvas Engine)
+       2. हल्का व स्मूद कैनवस (CPU लैग मुक्त 60 FPS)
        ========================================================================= */
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
@@ -543,10 +559,10 @@
       constructor() { this.reset(); }
       reset() {
         this.x = Math.random() * w;
-        this.y = -20 - Math.random() * 50;
-        this.size = 10 + Math.random() * 12;
-        this.speedY = 1.2 + Math.random() * 2;
-        this.speedX = Math.sin(Math.random() * Math.PI) * 1.5;
+        this.y = -20 - Math.random() * 40;
+        this.size = 9 + Math.random() * 10;
+        this.speedY = 1.2 + Math.random() * 1.8;
+        this.speedX = Math.sin(Math.random() * Math.PI) * 1.2;
         this.rotation = Math.random() * 360;
         this.spin = (Math.random() - 0.5) * 2;
         this.color = ['#ff8800', '#ffaa00', '#d82200', '#f44336'][Math.floor(Math.random() * 4)];
@@ -574,9 +590,9 @@
       reset() {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
-        this.radius = 0.8 + Math.random() * 2.2;
-        this.alpha = 0.2 + Math.random() * 0.8;
-        this.speedY = -0.3 - Math.random() * 0.8;
+        this.radius = 1 + Math.random() * 2;
+        this.alpha = 0.3 + Math.random() * 0.7;
+        this.speedY = -0.3 - Math.random() * 0.7;
       }
       update() {
         this.y += this.speedY;
@@ -587,38 +603,31 @@
         }
       }
       draw(ctx) {
-        ctx.save();
-        ctx.fillStyle = `rgba(255, 215, 100, ${Math.max(0.1, Math.min(1, this.alpha))})`;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = 'gold';
+        // लैग पैदा करने वाले shadowBlur को हटाकर सीधा हाई-स्पीड रेंडर
+        ctx.fillStyle = `rgba(255, 215, 120, ${Math.max(0.1, Math.min(1, this.alpha))})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
-        ctx.restore();
       }
     }
 
-    for (let i = 0; i < 28; i++) petals.push(new SacredPetal());
-    for (let i = 0; i < 65; i++) {
-      const s = new GoldenSpark();
-      s.y = Math.random() * h;
-      sparks.push(s);
-    }
+    for (let i = 0; i < 24; i++) petals.push(new SacredPetal());
+    for (let i = 0; i < 45; i++) sparks.push(new GoldenSpark());
 
-    function triggerFlowerShower(multiplier = 35) {
+    function triggerFlowerShower(multiplier = 25) {
       for (let i = 0; i < multiplier; i++) {
         const p = new SacredPetal();
         p.y = -10;
         petals.push(p);
       }
-      if (petals.length > 90) petals.splice(0, petals.length - 90);
+      if (petals.length > 70) petals.splice(0, petals.length - 70);
     }
 
     function createFirework(x, y) {
       const colors = ['#ffe066', '#ff4d4d', '#ff9900', '#ffd700'];
-      for (let i = 0; i < 35; i++) {
+      for (let i = 0; i < 28; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const vel = 2 + Math.random() * 4.5;
+        const vel = 2 + Math.random() * 4;
         fireworks.push({
           x, y,
           vx: Math.cos(angle) * vel,
@@ -647,20 +656,16 @@
         f.x += f.vx;
         f.y += f.vy;
         f.vy += 0.05;
-        f.alpha -= 0.02;
+        f.alpha -= 0.025;
         if (f.alpha <= 0) {
           fireworks.splice(i, 1);
           continue;
         }
-        fxCtx.save();
         fxCtx.fillStyle = f.color;
         fxCtx.globalAlpha = f.alpha;
-        fxCtx.shadowBlur = 12;
-        fxCtx.shadowColor = 'gold';
         fxCtx.beginPath();
         fxCtx.arc(f.x, f.y, 2.5, 0, Math.PI * 2);
         fxCtx.fill();
-        fxCtx.restore();
       }
 
       requestAnimationFrame(renderParticles);
@@ -683,7 +688,7 @@
 
     function showBlessing(blessingHindi, onNextCallback) {
       sound.playTempleBell(987);
-      triggerFlowerShower(35);
+      triggerFlowerShower(25);
       blessingText.textContent = blessingHindi;
       modal.classList.add('active');
 
@@ -696,7 +701,7 @@
     }
 
     /* =========================================================================
-       4. व्यवस्थित निर्बाध 8 चरण (सभी प्रश्न व अवांछित चरण हटा दिए गए हैं)
+       4. व्यवस्थित निर्बाध 8 चरण
        ========================================================================= */
     function renderStage(stage) {
       container.innerHTML = '';
@@ -706,7 +711,7 @@
         /* ---------------- चरण 1: दिव्य प्रवेश ---------------- */
         case 1:
           container.innerHTML = `
-            <div class="anuj-badge fade-in">॥ गोविंद शर्मा द्वारा प्रस्तुत पावन नवरात्रि आराधना ॥</div>
+            <div class="anuj-badge fade-in">॥ अनुज शर्मा द्वारा प्रस्तुत पावन नवरात्रि आराधना ॥</div>
             <div class="mata-darshan-frame fade-in">
               <img src="${IMG_SANCTUM_NIGHT}" alt="माँ शेरावाली पावन धाम" />
             </div>
@@ -813,7 +818,7 @@
           document.getElementById('open-door-btn').onclick = () => {
             sound.playTempleBell(587);
             sound.playShankh();
-            triggerFlowerShower(35);
+            triggerFlowerShower(30);
 
             document.getElementById('temple-doors').classList.add('door-open');
 
@@ -839,7 +844,7 @@
           `;
           document.getElementById('shankh-el').onclick = () => {
             sound.playShankh();
-            triggerFlowerShower(40);
+            triggerFlowerShower(30);
             setTimeout(() => {
               showBlessing("माता रानी के आशीर्वाद से आपके जीवन में हर दिन मंगल, शांति और सकारात्मकता बनी रहे।", () => renderStage(7));
             }, 1200);
@@ -873,14 +878,14 @@
             
             sound.playTempleBell(1046);
             sound.playShankh();
-            triggerFlowerShower(50);
+            triggerFlowerShower(40);
 
             const diya = document.getElementById('moving-diya');
             diya.classList.add('animate-aarti-revolution');
 
             const bellInterval = setInterval(() => {
               sound.playTempleBell(880 + Math.random() * 200);
-              triggerFlowerShower(12);
+              triggerFlowerShower(10);
             }, 1800);
 
             setTimeout(() => {
@@ -900,7 +905,7 @@
             <h1 class="devotional-title fade-in" style="font-size: clamp(2rem, 5.2vw, 3.2rem); margin-bottom: 2px;">🌺 जय माता दी 🌺</h1>
             
             <div class="final-tribute-banner fade-in">
-              <span class="final-tribute-text">🌺 गोविंद शर्मा की ओर से हार्दिक शुभकामनाएँ 🌺</span>
+              <span class="final-tribute-text">🌺 अनुज शर्मा की ओर से हार्दिक शुभकामनाएँ 🌺</span>
             </div>
 
             <p class="instruction-text fade-in" style="margin-bottom: 8px; font-weight: 600; color: #ffecc2;">
@@ -911,7 +916,7 @@
             <button id="restart-btn" class="btn-divine fade-in">दिव्य यात्रा पुनः प्रारंभ करें 🔄</button>
           `;
           sound.playTempleBell(1046);
-          triggerFlowerShower(65);
+          triggerFlowerShower(50);
           createFirework(w * 0.5, h * 0.35);
 
           document.getElementById('restart-btn').onclick = () => {
